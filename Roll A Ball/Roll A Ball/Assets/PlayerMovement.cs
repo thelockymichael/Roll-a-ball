@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("PickUp"))
         {
-            other.gameObject.SetActive(false);
+            //other..Find("PickUp").SetActive(false);
             count = count + 1;
             SetCountText();
         }
