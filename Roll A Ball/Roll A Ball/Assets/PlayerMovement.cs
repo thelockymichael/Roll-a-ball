@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
+using InControl;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -12,8 +14,15 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private int count;
 
+    private AudioSource audioSource;
+
+    public AudioClip victoryClip;
+
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
         rb = GetComponent<Rigidbody>();
         count = 0;
         SetCountText();
@@ -22,9 +31,15 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        var InputDevice = InputManager.ActiveDevice;
 
+
+        float moveHorizontal = InputDevice.LeftStickX;
+        float moveVertical = InputDevice.LeftStickY;
+        //float moveHorizontal = Input.GetAxis("Horizontal");
+        // float moveVertical = Input.GetAxis("Vertical");
+
+        //Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
         rb.AddForce(movement * speed);
@@ -42,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
            other.gameObject.transform.GetChild(0).gameObject.SetActive(false);
             other.gameObject.transform.GetChild(1).gameObject.SetActive(false);
             //StartCoroutine("delay");
-
+            //PlayExplosionSound.PlaySound(2);
             other.gameObject.transform.GetChild(2).gameObject.SetActive(true);
            // other.gameObject.transform.GetChild(1).GetComponent<DestroyEffect>().enabled = true;
             count = count + 1;
@@ -61,6 +76,10 @@ public class PlayerMovement : MonoBehaviour
         countText.text = "Count: " + count.ToString();
         if (count >= 12)
         {
+            Debug.Log("WINNING");
+            audioSource.clip = victoryClip;
+            audioSource.Play();
+
             countText.text = "";
             winText.SetActive(true);
             Time.timeScale = 0f;
