@@ -34,11 +34,27 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("PickUp"))
         {
-            //other..Find("PickUp").SetActive(false);
+            //other.gameObject.transform.Find("Exploson6");
+            //other.gameObject.transform.GetChild(0);
+            // Destroy(other.gameObject.GetChild(0));
+            //StartCoroutine(Delay());
+
+           other.gameObject.transform.GetChild(0).gameObject.SetActive(false);
+            other.gameObject.transform.GetChild(1).gameObject.SetActive(false);
+            //StartCoroutine("delay");
+
+            other.gameObject.transform.GetChild(2).gameObject.SetActive(true);
+           // other.gameObject.transform.GetChild(1).GetComponent<DestroyEffect>().enabled = true;
             count = count + 1;
             SetCountText();
         }
     }
+
+    /*IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(3);
+                
+    }*/
 
     void SetCountText()
     {
